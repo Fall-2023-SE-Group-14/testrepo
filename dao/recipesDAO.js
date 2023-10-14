@@ -3,7 +3,6 @@
 // import password from "./mail_param.js";
 
 const mongodb = require("mongodb");
-const nodemailer = require("nodemailer");
 const password = require("./mail_param");
 const pass = password.password;
 // import 'requests' from requests;
@@ -147,34 +146,35 @@ class RecipesDAO {
         // console.log(recipesList[j-1])
       }
 
-      if (flagger == "true") {
-        var transporter = nodemailer.createTransport({
-          host: "smtp.gmail.com",
-          port: 465,
-          secure: true,
-          auth: {
-            user: "simran.walmart@gmail.com",
-            pass: pass,
-          },
-        });
+      // if (flagger == "true") {
+      //   var transporter = nodemailer.createTransport({
+      //     host: "smtp.gmail.com",
+      //     port: 465,
+      //     secure: true,
+      //     auth: {
+      //       user: "simran.walmart@gmail.com",
+      //       pass: pass,
+      //     },
+      //   });
 
-        var mailOptions = {
-          from: "simran.walmart@gmail.com",
-          to: email,
-          subject: "Your Recommended Recipes!",
-          text: str_mail,
-        };
+      //   var mailOptions = {
+      //     from: "simran.walmart@gmail.com",
+      //     to: email,
+      //     subject: "Your Recommended Recipes!",
+      //     text: str_mail,
+      //   };
 
-        var mail_test_code;
-        transporter.sendMail(mailOptions, function(error, info) {
-          if (error) {
-            console.log(error);
-          } else {
-            mail_test_code = info.response;
-            console.log("Email sent: " + info.response);
-          }
-        });
-      }
+      //
+      //   transporter.sendMail(mailOptions, function(error, info) {
+      //     if (error) {
+      //       console.log(error);
+      //     } else {
+      //       mail_test_code = info.response;
+      //       console.log("Email sent: " + info.response);
+      //     }
+      //   });
+      // }
+      var mail_test_code;
 
       return { recipesList, totalNumRecipes, mail_test_code };
     } catch (e) {
