@@ -3,11 +3,7 @@
 // import password from "./mail_param.js";
 
 const mongodb = require("mongodb");
-// import 'requests' from requests;
-// import axios from "axios";
 const axios = require("axios");
-const request = require("request");
-// import request from "request";
 
 const ObjectId = mongodb.ObjectId;
 let recipes;
