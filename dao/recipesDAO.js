@@ -1,7 +1,7 @@
 const mongodb = require("mongodb");
 // const nodemailer = require("nodemailer");
-const password = require("./mail_param");
-const pass = password.password;
+// const password = require("./mail_param");
+// const pass = password.password;
 // import 'requests' from requests;
 // import axios from "axios";
 const axios = require("axios");
