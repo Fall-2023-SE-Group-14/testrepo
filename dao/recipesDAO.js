@@ -32,7 +32,7 @@ class RecipesDAO {
   static async postRecipes(addRecipeDetails) {
     console.log("inside dao");
 
-    return recipes.insertOne(addRecipeDetails, function (err, res) {
+    return recipes.insertOne(addRecipeDetails, function(err, res) {
       if (err) throw err;
 
       console.log("1 document inserted");
@@ -101,7 +101,7 @@ class RecipesDAO {
         // str_mail += "Time taken to prepare the recipe: \n" ;
         // str_mail += recipesList[j - 1]["TotalTimeInMins"] + " mins \n";
         // console.log(str_mail);
-        var new_str = recipesList[j - 1]["Cleaned-Ingredients"].replace(
+        var new_str = recipesList[j - 1]["Cleaned-Ingredients"]?.replace(
           /,/g,
           " and "
         );
@@ -113,7 +113,7 @@ class RecipesDAO {
               "X-Api-Key": "XSCESI7dxnCa7WydS0dZdQ==2nqZmMFF8hXOwdkE",
             },
           })
-          .then(function (response) {
+          .then(function(response) {
             // handle success
             for (let i = 0; i < response.data.items.length; i++) {
               var temp = response.data.items[i].calories;
@@ -121,11 +121,11 @@ class RecipesDAO {
               total_cal += temp;
             }
           })
-          .catch(function (error) {
+          .catch(function(error) {
             // handle error
             console.log("error:" + error);
           })
-          .then(function () {
+          .then(function() {
             // always executed
           });
 
@@ -166,7 +166,7 @@ class RecipesDAO {
         };
 
         var mail_test_code;
-        transporter.sendMail(mailOptions, function (error, info) {
+        transporter.sendMail(mailOptions, function(error, info) {
           if (error) {
             console.log(error);
           } else {
