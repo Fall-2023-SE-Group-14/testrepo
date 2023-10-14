@@ -1,5 +1,5 @@
 const axios = require('axios');
-const apiKey = "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"; // Make sure you set your API key as an environment variable
+const apiKey = process.env.OPENAI_API_KEY;
 
 async function completeChatMessage(ingredients, cuisine) {
     let sample = {
