@@ -1,3 +1,9 @@
+// import app from "./server.js";
+// import mongodb from "mongodb";
+// import dotenv from "dotenv";
+// import recipesDAO from "./dao/recipesDAO.js";
+// import userAuthModel from "./dao/userAuthModel.js";
+
 const express = require("express");
 const cors = require("cors");
 const recipes = require("./api/recipes.route");
@@ -7,9 +13,9 @@ const bodyParser = require("body-parser");
 const app = express();
 
 app.use(
-    bodyParser.urlencoded({
-        extended: true,
-    })
+  bodyParser.urlencoded({
+    extended: true,
+  })
 );
 app.use(bodyParser.json());
 app.use(cors());
@@ -33,21 +39,21 @@ const port = process.env.PORT || 8000;
 
 //Connection to MongoDB
 MongoClient.connect(process.env.RECIPES_DB_URI, {
-    maxPoolSize: 50,
-    wtimeoutMS: 2500,
-    useNewUrlParser: false,
+  maxPoolSize: 50,
+  wtimeoutMS: 2500,
+  useNewUrlParser: false,
 })
-    .catch((err) => {
-        console.error(err.stack);
-        process.exit(1);
-    })
-    .then(async (client) => {
-        await recipesDAO.injectDB(client);
-        await userAuthModel.injectDB(client);
+  .catch((err) => {
+    console.error(err.stack);
+    process.exit(1);
+  })
+  .then(async (client) => {
+    await recipesDAO.injectDB(client);
+    await userAuthModel.injectDB(client);
 
-        app.listen(port, () => {
-            console.log(`listening on port ${port}`);
-        });
+    app.listen(port, () => {
+      console.log(`listening on port ${port}`);
     });
+  });
 
 module.exports = app;
