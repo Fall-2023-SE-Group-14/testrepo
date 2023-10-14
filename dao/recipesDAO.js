@@ -190,7 +190,7 @@ class RecipesDAO {
       //     text: str_mail,
       //   };
 
-      //   var mail_test_code;
+      var mail_test_code;
       //   transporter.sendMail(mailOptions, function(error, info) {
       //     if (error) {
       //       console.log(error);

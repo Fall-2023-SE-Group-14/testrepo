@@ -1,5 +1,5 @@
 const axios = require('axios');
-const apiKey = "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"; // Make sure you set your API key as an environment variable
+const apiKey = "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"; // Make sure you set your API key as an environment variable
 
 async function completeChatMessage(ingredients, cuisine) {
     let sample = {
@@ -30,7 +30,7 @@ async function completeChatMessage(ingredients, cuisine) {
     return axios.post(apiUrl, requestData, { headers })
         .then(response => response.data)
         .catch(error => {
-            console.log("ERROR ", error)
+            console.log("ERROR ", JSON.stringify(error));
             throw error;
         });
 }
