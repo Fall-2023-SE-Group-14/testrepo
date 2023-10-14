@@ -1,5 +1,6 @@
 const axios = require('axios');
-const apiKey = process.env.OPENAI_API_KEY;
+const { OPENAI_API_KEY } = require('../data');
+const apiKey = OPENAI_API_KEY;
 
 async function completeChatMessage(ingredients, cuisine) {
     let sample = {
