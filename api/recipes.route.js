@@ -1,5 +1,3 @@
-// import express from "express";
-// import RecipesCtrl from "./recipes.controller.js";
 const express = require("express");
 const RecipesCtrl = require("./recipes.controller.js");
 const router = express.Router();

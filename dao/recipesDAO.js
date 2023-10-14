@@ -1,7 +1,3 @@
-// import mongodb from "mongodb";
-// import nodemailer from "nodemailer";
-// import password from "./mail_param.js";
-
 const mongodb = require("mongodb");
 const nodemailer = require("nodemailer");
 const password = require("./mail_param");
@@ -10,6 +6,7 @@ const pass = password.password;
 // import axios from "axios";
 const axios = require("axios");
 const request = require("request");
+const { getPhotoForResource } = require('../adapter/pexel');
 // import request from "request";
 
 const ObjectId = mongodb.ObjectId;
@@ -32,7 +29,7 @@ class RecipesDAO {
   static async postRecipes(addRecipeDetails) {
     console.log("inside dao");
 
-    return recipes.insertOne(addRecipeDetails, function (err, res) {
+    return recipes.insertOne(addRecipeDetails, function(err, res) {
       if (err) throw err;
 
       console.log("1 document inserted");
@@ -92,8 +89,43 @@ class RecipesDAO {
     const displayCursor = cursor.limit(recipesPerPage);
     try {
       const recipesList = await displayCursor.toArray();
-      const totalNumRecipes = await recipes.countDocuments(query);
+      let totalNumRecipes = await recipes.countDocuments(query);
 
+      if (recipesList.length == 0) {
+        try {
+          let gptResponse = await completeChatMessage(filters.CleanedIngredients, filters.Cuisine);
+          // let gptResponse = {
+          //   choices: [{
+          //     message: {
+          //       content: '{\n' +
+          //         '  "_id": "",\n' +
+          //         '  "TranslatedRecipeName": "Indian-style Rice and Egg Omelette",\n' +
+          //         '  "TotalTimeInMins": 25,\n' +
+          //         '  "Cuisine": "Indian",\n' +
+          //         '  "URL": "https://www.google.com/url?sa=i&;amp;url=https%3A%2F%2Fjoyfoodsunshine.com%2Fomelette-recipe%2F&amp;psig=AOvVaw0VYV71kTdiRNd6MKqfeD2-&amp;ust=1694111135398000&amp;source=images&amp;cd=vfe&amp;opi=89978449&amp;ved=0CA8QjRxqFwoTCNCL3_XNloEDFQAAAAAdAAAAABAD",\n' +
+          //         '  "Cleaned-Ingredients": "1 cup cooked rice, 2 eggs, salt to taste, 1/4 teaspoon turmeric powder, 1/4 teaspoon cumin powder, 1/4 teaspoon coriander powder, 1/4 teaspoon red chili powder, 1 small onion (finely chopped), 1 green chili (finely chopped), 2 tablespoons oil",\n' +
+          //         '  "image-url": "https://joyfoodsunshine.com/wp-content/uploads/2022/07/best-omelette-recipe-1.jpg",\n' +
+          //         '  "Ingredent-count": 9,\n' +
+          //         '  "calories": ""\n' +
+          //         '}'
+          //     }
+          //   }]
+          // };
+          if (gptResponse.choices.length > 0) {
+            // console.log(gptResponse.choices[0]);
+            gptResponse = JSON.parse(gptResponse.choices[0]?.message?.content);
+            // console.log("GPT RESP : ", gptResponse);
+            let imageUrl = await getPhotoForResource(gptResponse.TranslatedRecipeName);
+            // console.log("PHOTOS : ", imageUrl);
+            gptResponse['image-url'] = imageUrl;
+            recipesList.push(gptResponse);
+            //await RecipesDAO.postRecipes(gptResponse);
+            totalNumRecipes = 1;
+          }
+        } catch (error) {
+          console.error("Error Fetching Recipe from Chat GPT ", error);
+        }
+      }
       var str_mail = "";
       for (var j = 1; j <= recipesList.length; j++) {
         // str_mail += "\nRecipe " + j + ": \n";
@@ -113,7 +145,7 @@ class RecipesDAO {
               "X-Api-Key": "XSCESI7dxnCa7WydS0dZdQ==2nqZmMFF8hXOwdkE",
             },
           })
-          .then(function (response) {
+          .then(function(response) {
             // handle success
             for (let i = 0; i < response.data.items.length; i++) {
               var temp = response.data.items[i].calories;
@@ -121,11 +153,11 @@ class RecipesDAO {
               total_cal += temp;
             }
           })
-          .catch(function (error) {
+          .catch(function(error) {
             // handle error
             console.log("error:" + error);
           })
-          .then(function () {
+          .then(function() {
             // always executed
           });
 
@@ -166,7 +198,7 @@ class RecipesDAO {
         };
 
         var mail_test_code;
-        transporter.sendMail(mailOptions, function (error, info) {
+        transporter.sendMail(mailOptions, function(error, info) {
           if (error) {
             console.log(error);
           } else {

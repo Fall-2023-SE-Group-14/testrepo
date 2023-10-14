@@ -1,4 +1,5 @@
-// import RecipesDAO from "../dao/recipesDAO.js";
+const { completeChatMessage } = require('../adapter/gpt');
+const { getPhotoForResource } = require('../adapter/pexel');
 const RecipesDAO = require("../dao/recipesDAO");
 
 class RecipesController {
@@ -35,7 +36,21 @@ class RecipesController {
         page,
         recipesPerPage,
       });
-
+    // if (recipesList.length == 0) {
+    //   try {
+    //     let gptResponse = await completeChatMessage(filters.CleanedIngredients, filters.Cuisine);
+    //     console.log(gptResponse.choices[0]);
+    //     gptResponse = JSON.parse(gptResponse.choices[0]?.message?.content);
+    //     console.log("GPT RESP : ", gptResponse);
+    //     let photos = await getPhotoForResource(gptResponse.TranslatedRecipeName);
+    //     console.log("PHOTOS : ", photos);
+    //     // gptResponse['image-url'] = imageUrl;
+    //     recipesList.push(gptResponse);
+    //     await RecipesDAO.postRecipes(req.body);
+    //   } catch (error) {
+    //     console.error("Error Fetching Recipe from Chat GPT ", error);
+    //   }
+    // }
     let response = {
       recipes: recipesList,
       page: page,

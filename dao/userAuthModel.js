@@ -1,5 +1,3 @@
-// import mongodb from "mongodb";
-
 let usersCollection;
 class userAuthModel {
   static async injectDB(conn) {
