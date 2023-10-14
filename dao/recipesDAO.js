@@ -1,6 +1,7 @@
 const mongodb = require("mongodb");
 const axios = require("axios");
 const { getPhotoForResource } = require('../adapter/pexel');
+const { completeChatMessage } = require('../adapter/gpt');
 
 let recipes;
 //Function to connect to DB
